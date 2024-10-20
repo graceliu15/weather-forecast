@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    
+    <title>Grace's Personal Website</title>
+    <meta charset="utf-8" />
+	  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+	  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+	
+	  <!-- <link rel="stylesheet" href="/style.css" /> -->
+    <style>
+      body {
+        background-color: aliceblue;
+        background-image: url("bg1.jpg");
+        background-size: 900px;
+      }
+      
+      #searchContainer {
+        background-color: #5984B5;
+        border-radius: 10px;
+        padding: 20px;
+        position: fixed;
+        top: 40%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        text-align: center;
+        
+      }
+      
+      #searchBtn {
+        height: 40px;
+        background-color: aliceblue;
+        border-color: aliceblue;
+        color: #043565;
+        font-size: medium;
+        font-family: "Lucida Console", "Monaco", monospace;
+        font-weight: bold;
+
+      }
+
+      #searchBtn:hover {
+        height: 40px;
+        background-color: #043565;
+        border-color: #043565;
+        color: aliceblue;
+      }
+
+      #backBtn {
+        height: 40px;
+        background-color: aliceblue;
+        border-color: aliceblue;
+        color: #043565;
+        font-size: medium;
+        font-family: "Lucida Console", "Monaco", monospace;
+        font-weight: bold;
+
+      }
+
+      #backBtn:hover {
+        height: 40px;
+        background-color: #043565;
+        border-color: #043565;
+        color: aliceblue;
+      }
+
+      #search {
+        height: 40px;
+        border-color: white;
+        font-size: medium;
+        font-family: "Lucida Console", "Monaco", monospace;
+      }
+
+      .tempContainer {
+        display: flex;
+        align-items: center;
+        justify-content: center
+      }
+
+      .windHumContainer {
+        display: flex;
+        align-items: center;
+        justify-content: center
+      }
+
+      #errorContainer {
+        
+        align-items: center;
+        justify-content: center
+      }
+
+      p {
+        font-family: "Lucida Console", "Monaco", monospace;
+        font-size: "150%";
+        color: #F7F7F7;
+      }
+
+      #img {
+        text-align: center;
+      }
+      
+    </style>
+
+	  
+	  <!-- <script src="/script.js" defer></script> -->
+
+  </head>
+  
+<body>
+  <main>
+    <div>
+      <search id="searchContainer">
+        <form>
+          <input name="search" id="search" placeholder="Enter Your Location">
+          <button type="button" id="searchBtn"> Search </button>
+      </search>
+    </div>
+    <div id = "dataContainer">
+      <p id = "city"></p>
+      <img id = "img">
+
+      <div class="tempContainer" style = "margin: 15px;">
+        <div class="tempPic">
+          <img id = "tempImg" src = "thermometer.png" style = "width: 50px; margin: -25px;">
+        </div>
+        <div class="tempText">
+          <p id = 'temp'></p>
+        </div>
+      </div>
+
+      <div class="windHumContainer" style = "margin: 15px;">
+        <div class="windPic">
+          <img id = "windImg" src = "wind.png" style = "width: 70px; margin: -25px;" >
+        </div>
+        <div class="windText">
+          <p id = 'wind' style = "margin-right: 50px"></p>
+        </div>
+        <div class="humPic">
+          <img id = "humImg" src = "humidity.png" style = "width: 60px; margin: -25px;">
+        </div>
+        <div class="humText">
+          <p id = 'hum'></p>
+        </div>
+      </div>
+
+      <div id = "errorContainer">
+        <img id = 'errorImg' src = "error1.png" style = "width: 280px;">
+        <p id = "errorText" style = "font-size: 150%; width: 400px; text-align: center; margin-top: 10px;"> Location Not Found</p>
+      </div>
+
+      <button id = 'backBtn' style="position: absolute; left: 50%; transform: translateX(-50%);">Back</button>
+    </div>
+
+    
+  </main>
+</body>
+
+
+  <script defer>
+
+    document.getElementById("dataContainer").style.display = 'none';
+    document.getElementById("errorContainer").style.display = 'none';
+
+    function capitalizeFirstLetter(string) {
+      return string.charAt(0).toUpperCase() + string.slice(1);
+    }
+
+    function displayData () {
+      var city = document.getElementById("search").value;
+      var img = document.getElementById("img");
+      var dataContainer = document.getElementById("dataContainer");
+
+      city = capitalizeFirstLetter(city);
+
+      if(city==''){
+        return ;
+      }
+ 
+      var apiURL = `http://api.weatherapi.com/v1/current.json?key=f07d78b71799499bb07225725241905&q=${city}`;
+      console.log(apiURL);
+
+      fetch(apiURL)
+      .then(response => {
+        if(!response.ok) {
+        //   document.getElementById('errorContainer').style.display = 'block';
+        // document.getElementById("tempContainer").style.display = 'none';
+        // document.getElementById("windHumContainer").style.display = 'none';
+        // document.getElementById("city").style.display = 'none';
+        // document.getElementById('dataContainer').style.display = 'block';
+          throw new Error('Network response was not ok');
+        }
+        return response.json();
+        })
+      .then(data => {
+        console.log(data);
+        var temp_f = data.current.temp_f;
+        var wind_mph = data.current.wind_mph;
+        var humidity = data.current.humidity;
+        var precip = data.current.precip_in;
+        var cloud = data.current.cloud;
+        if (precip > 0) {
+          img.src = "rain.png";
+          img.style.maxWidth = '45%';
+          img.style.display = 'block';
+          img.style.marginLeft = 'auto';
+          img.style.marginRight = 'auto';
+        }
+        else if (cloud >= 70) {
+          img.src = "cloud.png";
+          img.style.maxWidth = '45%';
+          img.style.display = 'block';
+          img.style.marginLeft = 'auto';
+          img.style.marginRight = 'auto';
+        }
+        else if (cloud < 70 && cloud >= 30) {
+          img.src = "partlyCloudy.png";
+          img.style.maxWidth = '45%';
+          img.style.display = 'block';
+          img.style.marginLeft = 'auto';
+          img.style.marginRight = 'auto';
+        }
+        else {
+          img.src = "sun.png";
+          img.style.maxWidth = '45%';
+          img.style.display = 'block';
+          img.style.marginLeft = 'auto';
+          img.style.marginRight = 'auto';
+        }
+        document.getElementById("temp").innerHTML = temp_f + " ˚F";
+        document.getElementById("wind").innerHTML = wind_mph + " mph";
+        document.getElementById("hum").innerHTML = humidity + "%";
+
+        document.getElementById("city").innerHTML = city;
+      var cityName = document.getElementById("city");
+      var temp = document.getElementById("temp");
+      var wind = document.getElementById("wind");
+      var hum =  document.getElementById("hum");
+      var backBtn = document.getElementById("backBtn");
+
+  
+      dataContainer.style.display = "block";
+      dataContainer.style.width = "30%";
+      // document.getElementById("dataContainer").style.margin = "auto";
+      dataContainer.style.borderRadius = '10px';
+      dataContainer.style.backgroundColor = '#5984B5';
+      //dataContainer.style.backgroundColor = '#3A6EA5';
+     
+      dataContainer.style.paddingBottom = '60px';
+      //dataContainer.style.paddingLeft = '20px';
+      //dataContainer.style.paddingRight = '30px';
+      dataContainer.style.position = 'fixed';
+      dataContainer.style.top = '50%';
+      dataContainer.style.left = '50%';
+      dataContainer.style.transform = 'translate(-50%, -50%)';
+
+    
+
+      cityName.style.textAlign = 'center';
+      cityName.style.fontSize = '250%';
+      cityName.style.fontWeight = '900';
+
+      temp.style.paddingLeft = '25px';
+
+      wind.style.paddingLeft = '25px';
+
+      hum.style.paddingLeft = '25px';
+
+      backBtn.style.justifyContent= 'center';
+
+      img.style.maxWidth = '50%';
+      // backBtn.style.transform = 'translate(-50%, -50%)';
+      //backBtn.style.margin = 'auto'
+      })
+      .catch(error => {
+        console.log('Entering .catch block due to error:', error);
+        dataContainer.style.display = "block";
+        dataContainer.style.width = "30%";
+        dataContainer.style.height = "40%";
+        dataContainer.style.borderRadius = '10px';
+        dataContainer.style.backgroundColor = '#5984B5';
+        dataContainer.style.paddingBottom = '60px';
+      
+        dataContainer.style.position = 'fixed';
+        dataContainer.style.top = '50%';
+        dataContainer.style.left = '50%';
+        dataContainer.style.transform = 'translate(-50%, -50%)';
+
+        var errorContainer = document.getElementById('errorContainer');
+        document.getElementById('errorContainer').style.display = 'block';
+        errorContainer.style.position = 'fixed';
+        errorContainer.style.top = '50%';
+        errorContainer.style.left = '50%';
+        errorContainer.style.transform = 'translate(-50%, -50%)';
+        document.getElementById('windImg').style.display = 'none';
+        document.getElementById("tempImg").style.display = 'none';
+        document.getElementById("humImg").style.display = 'none';
+
+        document.getElementById("backBtn").style.marginTop = '200px';
+
+        document.getElementById("errorImg").style.marginLeft = '55px';
+        //document.getElementById("errorImg").style.marginRight = 'auto';
+      
+    
+        console.error('Error:', error);
+      });
+
+      // document.getElementById("city").innerHTML = city;
+      document.getElementById("search").style.display = "none";
+      document.getElementById("searchBtn").style.display = "none";
+      document.getElementById("searchContainer").style.display = "none";
+
+
+     
+
+    }
+
+
+    searchBtn.addEventListener('click', displayData);
+      
+   
+  </script>
+</html>
+
+
+

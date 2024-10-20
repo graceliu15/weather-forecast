@@ -1,0 +1,116 @@
+*{
+    margin: 0px;
+    padding: 0px;
+  }
+  
+  /* STYLE SECTIONING TAGS */
+  body {
+   background-color:
+     #2D3142; 
+  }
+  
+  /* STYLE TEXT */
+  h1 {
+    color: #DDDBF1;
+    font-family: Georgia, 'Times New Roman', Times, serif;
+    font-weight: 900;
+    font-size: 300%;
+    padding-top: 30px;
+    padding-bottom: 30px;
+    text-align:center;
+  }
+  
+  h2 {
+    color: #DDDBF1;
+     font-family: Georgia, 'Times New Roman', Times, serif;
+    padding-bottom: 10px;
+  }
+  
+  h3 {
+    color: #DDDBF1;
+     font-family: Georgia, 'Times New Roman', Times, serif;
+    text-decoration: underline;
+    padding-top: 35px;
+    padding-bottom: 10px;
+  }
+  
+  p {
+    color: white;
+    font-family: optima;
+  }
+  
+  header {
+    margin-top: 0;
+    margin-bottom: 0;
+    margin-right: 10%;
+    margin-left: 10%;
+    text-align: center;
+  }
+  
+  main {
+    margin-top: 0;
+    margin-bottom:5%;
+    margin-right: 10%;
+    margin-left: 10%;
+  }
+  
+  .welcome {
+    text-decoration: overline;
+    font-style:italic;
+  }
+  
+  .reading-heading {
+    padding-top: 20px;
+  }
+  
+  .intro {
+    padding-top: 10px;
+    padding-bottom: 10px;
+    font-size: 125%;
+    color: #B4ADEA;
+  }
+  
+  .hobbies-heading {
+    font-size: 160%;
+  }
+  
+  /* STYLE IMAGES */
+  img {
+    max-width: 70%;
+    border: 3px solid #DDDBF1;
+    margin: 10px;
+  }
+  
+  #portrait {
+    max-width: 28%;
+    border-radius: 50%;
+  }
+  
+  /* STYLE NAV BAR */
+  nav {
+    text-align: center;
+  }
+  
+  ul {
+    list-style-type: none;
+    background-color: #FCFACD;
+    overflow: hidden;
+    padding: 1em;
+  }
+  
+  li {
+    display: inline;
+  }
+  
+  li a {
+    text-decoration: none;
+    color: #2D3142;
+    font-size: 1.3em;
+    padding: 1em;
+    font-family: verdana;
+  }
+  li a:hover {
+    background-color: #568EA3;
+    color: white;
+  }
+  
